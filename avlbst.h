@@ -274,34 +274,32 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     if(parent == nullptr)
     {
       this->root_ = child;
-      if(child != nullptr)
-      {
-        child->setParent(nullptr);
-      }
-      else
-      {
-        if(isLeftChild)
-        {
-          parent->setLeft(child);
-        }
-        else
-        {
-          parent->setRight(child);
-        }
-
-        if(child != nullptr)
-        {
-          child->setParent(parent);
-        }
-      }
-
-      delete nodeToRemove;
-
-      if(parent != nullptr)
-      {
-        removeFix(parent, diff);
-      }
+      if(child != nullptr){
+      child->setParent(nullptr);
     }
+  } else 
+  {
+    if(isLeftChild)
+    {
+      parent->setLeft(child);
+    } else 
+    {
+      parent->setRight(child);
+    }
+
+    if(child != nullptr)
+    {
+      child->setParent(parent);
+    }
+}
+
+  delete nodeToRemove;
+
+  if(parent != nullptr)
+  {
+  removeFix(parent, diff);
+  }
+
 }
 
 template<class Key, class Value>
