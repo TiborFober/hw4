@@ -5,7 +5,6 @@
 #include <exception>
 #include <cstdlib>
 #include <utility>
-
 /**
  * A templated class for a Node in a search tree.
  * The getters for parent/left/right are virtual so
@@ -509,49 +508,34 @@ template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::remove(const Key& key)
 {
     // TODO
-    Node<Key, Value>* node = internalFind(key);
-    if(node == nullptr)
-      return;
+    if (root_ == nullptr) return;
 
-    // Case 3: Two children
-    if(node->getLeft() != nullptr && node->getRight() != nullptr)
-    {
-      Node<Key, Value>* pred = predecessor(node);
-      nodeSwap(node, pred);
-      node = pred;
-    }
+		Node<Key, Value>* newNode = internalFind(key);
+		if(newNode == nullptr) return;
 
-    Node<Key, Value>* child = nullptr;
-    if(node->getLeft() != nullptr)
-    {
-      child = node->getLeft();
-    }
-    else if(node->getRight() != nullptr)
-    {
-      child = node->getRight();
-    }
+		if((newNode->getLeft() != nullptr) and (newNode->getRight() != nullptr)){
+			Node<Key, Value>* pred = predecessor(newNode);
+			if(pred != nullptr) nodeSwap(newNode, pred);
+		}
 
-    if(child != nullptr)
-    {
-      child->setParent(node->getParent());
-    }
+		Node<Key, Value>* child = newNode->getLeft();
+		if(newNode->getLeft() == nullptr){
+			child = newNode->getRight();
+		}
 
-    if(node->getParent() == nullptr)
-    {
-      root_ = child;
-    }
-    else if(node == node->getParent()->getLeft())
-    {
-      node->getParent()->setLeft(child);
-    }
-    else
-    {
-      node->getParent()->setRight(child);
-    }
+		if (newNode->getParent() == nullptr) {
+			root_ = child;
+		} else if(newNode == ((newNode->getParent())->getLeft())){
+			(newNode->getParent())->setLeft(child);
+		} else { (newNode->getParent())->setRight(child);}
 
-    delete node;
+		if (child != nullptr){
+			child->setParent(newNode->getParent());
+		}
 
+		delete newNode;
 }
+
 
 
 
